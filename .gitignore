@@ -1,0 +1,4 @@
+arangodb/volumeData/**
+.vscode
+python/html/
+.DS_Store
