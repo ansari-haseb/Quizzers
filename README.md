@@ -1,4 +1,4 @@
-# quizzer
+# Quizzer
 
 The ``quizzer`` is a command line tool or interface which is built in GoLang and is using the `cobra` library. The command line tool integrates with the [OpenTDB](https://opentdb.com/) APIs to prepare a random questions Quiz platform. At the end of the quiz, the results are shown whether ``PASSED`` or ``FAILED`` with the quiz summary and selected answers in the terminal itself.
 
