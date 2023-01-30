@@ -1,6 +1,5 @@
 from arango import ArangoClient
 from flask import Flask, render_template
-from flask import jsonify
 from flask import request
 import tablib
 import os, glob
@@ -30,15 +29,18 @@ def question(number):
 @app.route('/quizzer/result', methods=['GET'])
 def getResultByUsername():
     username = request.args.get('username')
-    user = activeUserCollection.get(username)
-    results = user["results"]
-    processedResult = processResult(results)
+    try:
+        user = activeUserCollection.get(username)
+        results = user["results"]
+    except:
+        return render_template('user_not_found.html')
+    processedResult = processResult(results, username)
     html = generateResultHTMLElements(username, processedResult)
     print(html, file=open('python/html/result.html', 'w+'))
 
     return render_template('result.html')
 
-def processResult(results):
+def processResult(results, username):
     for filename in glob.glob("python/html/quiz_*"):
         os.remove(filename) 
     totalQuizAttempted = getTotalQuizOfUser(results)
@@ -53,7 +55,7 @@ def processResult(results):
             questionsData.append([question["question"], question["choices"], question["correctAnswer"], question["selectedAnswer"]])
 
         print(questionsData.export('html'), file=open('python/html/quiz_' + str(result["quizNo"]) + '.html', 'w+'))
-        html = generateQuizHTMLElements(str(result["quizNo"]))
+        html = generateQuizHTMLElements(str(result["quizNo"]), username)
         print(html, file=open('python/html/quiz_' + str(result["quizNo"]) + '.html', 'w+'))
         data.append([result["quizNo"], result["passed"], result["anwsered_correctly"], result["anwsered_incorrectly"], 10,result["scored"], "<a href='http://localhost:5000/question/quiz/" + str(result["quizNo"]) + "'>Quiz " + str(result["quizNo"]) +"</a>"])
         print(data.export('html'), file=open('python/html/result.html', 'w+'))
@@ -63,6 +65,7 @@ def processResult(results):
         "totalPercentage" : totalPercentage 
     }
     
+# Generate HTML Tags with the json
 def generateResultHTMLElements(username, processedResult):
     with open("python/html/result.html") as fp:
         soup = BeautifulSoup(fp, 'html.parser')
@@ -94,10 +97,17 @@ def generateResultHTMLElements(username, processedResult):
         totalTagPercentage.string = "Percentage: " + str(processedResult["totalPercentage"])
         totalTagPercentage.attrs["align"] = "center"
         bodyTag.append(totalTagPercentage)
+        pTag = soup.new_tag("p")
+        pTag.attrs["align"] = "center"
+        goHomeTag = soup.new_tag("a", href="http://localhost:5000/")
+        goHomeTag.string = "Go Home"
+        pTag.append(goHomeTag)
+        bodyTag.append(pTag)
         soup.append(htmlTag)
     return soup
 
-def generateQuizHTMLElements(quizNo):
+# Generate HTML Tags with the json
+def generateQuizHTMLElements(quizNo, username):
     with open("python/html/quiz_"+ quizNo +".html") as fp:
         soup = BeautifulSoup(fp, 'html.parser')
         table = soup.table
@@ -116,6 +126,12 @@ def generateQuizHTMLElements(quizNo):
         headerTag.attrs["align"] = "center"
         bodyTag.append(headerTag)
         bodyTag.append(table)
+        pTag = soup.new_tag("p")
+        pTag.attrs["align"] = "center"
+        goBackTag = soup.new_tag("a", href="http://localhost:5000/quizzer/result?username=" + username)
+        goBackTag.string = "Go Back"
+        pTag.append(goBackTag)
+        bodyTag.append(pTag)
         soup.append(htmlTag)
     return soup
 
