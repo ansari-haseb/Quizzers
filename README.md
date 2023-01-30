@@ -12,8 +12,14 @@ Then to visulaize the result, `Flask` library is used with `python`.
 To start using the CLI tool,
 1.  Clone the project and goto the `go` directory
 2.  Execute the command, `go install` from the directory. This  creates a binary package of this project called `quizzer` in this case.
-3.  Then execute, `quizzer init`. This is the only command provisioned by the tool. Once this command is executed, it will follow through the whole process till the end.
-4.  The user identification is mainly done by the `inGame Name` or `username`.
+3.  The above package will be place at the `GOPATH`. To check your `GOPATH` kindly execute the command `go env`. If the env is not set then, do the following:
+    > `mkdir ~/go`  
+    > `Then set $GOPATH in .bashrc`  
+    > `export GOPATH=~/go`  
+    > `export PATH=$PATH:$GOPATH/bin`
+
+4.  Then execute, `quizzer init`. This is the only command provisioned by the tool. Once this command is executed, it will follow through the whole process till the end.
+5.  The user identification is mainly done by the `inGame Name` or `username`.
 
 #### Tokenization
 > **NOTE:** The tokens for a user session are regenerated if or when one of the below case occurs;
