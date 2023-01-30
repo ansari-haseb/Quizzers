@@ -1,4 +1,5 @@
 arangodb/volumeData/**
 .vscode
-python/html/
 .DS_Store
+python/html/quiz_*
+python/html/result*
