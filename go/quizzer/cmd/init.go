@@ -38,6 +38,8 @@ import (
 var OPENTDB_API_BASE_URL string = "https://opentdb.com/"
 var OPENTDB_API_QUESTIONS_AMOUNT string = "10"
 var ACTIVE_SESSION_COLLECTION_NAME = "activeUsers"
+var ARANGODB_HOSTNAME = "localhost"
+var ARANGODB_PORT = "8529"
 
 
 // initCmd represents the init command
@@ -403,7 +405,7 @@ func databaseConnectionClient() driver.Client {
 
 	// Open a client connection 
 	conn, err = arangohttp.NewConnection(arangohttp.ConnectionConfig{
-		Endpoints: []string{"http://localhost:8529/"},
+		Endpoints: []string{"http://" + ARANGODB_HOSTNAME + ":" + ARANGODB_PORT},
 	})
 
 	if err != nil {
