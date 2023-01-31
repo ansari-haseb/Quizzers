@@ -7,6 +7,7 @@ Then to visulaize the result, `Flask` library is used with `python`.
 ### Prerequisites:
 1.  GoLang must be installed (version used 1.19.5)
 2.  Python must be installed (version used 3.9)
+3.  docker-compose must be installed (version used 2.13.0)
 
 ### Run the CLI Tool
 To start using the CLI tool,
