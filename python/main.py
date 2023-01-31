@@ -11,7 +11,7 @@ template_folder='html')
 ACTIVE_SESSION_COLLECTION_NAME = "activeUsers"
 
 # Initialize the ArangoDB client.
-client = ArangoClient(hosts='http://localhost:8529')
+client = ArangoClient(hosts='http://arangodb:8529')
 
 db = client.db('quizzer', username='quizzer', password='quizzer')
 
@@ -36,12 +36,12 @@ def getResultByUsername():
         return render_template('user_not_found.html')
     processedResult = processResult(results, username)
     html = generateResultHTMLElements(username, processedResult)
-    print(html, file=open('python/html/result.html', 'w+'))
+    print(html, file=open('html/result.html', 'w+'))
 
     return render_template('result.html')
 
 def processResult(results, username):
-    for filename in glob.glob("python/html/quiz_*"):
+    for filename in glob.glob("html/quiz_*"):
         os.remove(filename) 
     totalQuizAttempted = getTotalQuizOfUser(results)
     passedQuiz = getNumberOfPassedQuiz(results)
@@ -54,11 +54,11 @@ def processResult(results, username):
         for index, question in enumerate(questions):   
             questionsData.append([question["question"], question["choices"], question["correctAnswer"], question["selectedAnswer"]])
 
-        print(questionsData.export('html'), file=open('python/html/quiz_' + str(result["quizNo"]) + '.html', 'w+'))
+        print(questionsData.export('html'), file=open('html/quiz_' + str(result["quizNo"]) + '.html', 'w+'))
         html = generateQuizHTMLElements(str(result["quizNo"]), username)
-        print(html, file=open('python/html/quiz_' + str(result["quizNo"]) + '.html', 'w+'))
+        print(html, file=open('html/quiz_' + str(result["quizNo"]) + '.html', 'w+'))
         data.append([result["quizNo"], result["passed"], result["anwsered_correctly"], result["anwsered_incorrectly"], 10,result["scored"], "<a href='http://localhost:5000/question/quiz/" + str(result["quizNo"]) + "'>Quiz " + str(result["quizNo"]) +"</a>"])
-        print(data.export('html'), file=open('python/html/result.html', 'w+'))
+        print(data.export('html'), file=open('html/result.html', 'w+'))
     return {
         "totalQuizRound" : totalQuizAttempted,
         "totalPassedQuizRound" : passedQuiz,
@@ -67,7 +67,7 @@ def processResult(results, username):
     
 # Generate HTML Tags with the json
 def generateResultHTMLElements(username, processedResult):
-    with open("python/html/result.html") as fp:
+    with open("html/result.html") as fp:
         soup = BeautifulSoup(fp, 'html.parser')
         table = soup.table
         table.attrs["align"] = "center"
@@ -108,7 +108,7 @@ def generateResultHTMLElements(username, processedResult):
 
 # Generate HTML Tags with the json
 def generateQuizHTMLElements(quizNo, username):
-    with open("python/html/quiz_"+ quizNo +".html") as fp:
+    with open("html/quiz_"+ quizNo +".html") as fp:
         soup = BeautifulSoup(fp, 'html.parser')
         table = soup.table
         table.attrs["align"] = "center"
