@@ -63,6 +63,10 @@ Quiz Summary:
 4.  Once the correct name has been entered, the result page with all the quiz history of the user will be displayed with `total quiz attempted`, `total passed quiz` and `percentage` of the same.
 5.  Individual quiz summary(`questions, correct answers, selected answers`) can also be checked by clicking on the link provided in the indiviual row.
 
+**OR**
+
+> From the root directory, execute `sh run.sh` command. This will run the services inside the `docker-compose.yaml` file which inckudes the above `python` app and as well as the `arangodb` NoSQL Database in one go. The `python` app will then be availabe at port `5000` and the `arangodb` will be avaialble at port `8529`. To stop the services, execute `sh stop.sh`
+
 <br>
 
 ### Python Steps with Images:
