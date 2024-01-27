@@ -16,4 +16,4 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v3
         with:
-          python-version: latest
+          python-version: '3.9'
